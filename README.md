@@ -28,7 +28,7 @@ An overengineerd notes app using Spring Boot and React.
 | openapi | 1.6.11 |
 | lombok | 1.18.24 |
 
-### Vue 3
+### React
 
 | Name | Version |
 | ---- | :-----: |
