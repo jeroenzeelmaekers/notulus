@@ -2,18 +2,12 @@ package notulus.entities;
 
 import lombok.*;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @Data
 @Builder
 @AllArgsConstructor

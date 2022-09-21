@@ -6,11 +6,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.text.SimpleDateFormat;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 public class JsonUtil {
 
     private static final ObjectWriter objectWriter = new ObjectMapper()

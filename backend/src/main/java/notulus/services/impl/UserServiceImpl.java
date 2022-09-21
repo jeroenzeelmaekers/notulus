@@ -1,5 +1,7 @@
 package notulus.services.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import notulus.entities.Role;
 import notulus.entities.User;
 import notulus.exception.NoRoleFoundException;
@@ -7,8 +9,6 @@ import notulus.exception.NoUserFoundException;
 import notulus.repositories.RoleRepository;
 import notulus.repositories.UserRepository;
 import notulus.services.UserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,11 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -34,11 +29,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see notulus.services.UserService#save(notulus.entities.User)
-     */
     @Override
     @Transactional
     public User save(User user) {
@@ -47,11 +37,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see notulus.services.UserService#addRole(java.lang.String, java.lang.String)
-     */
     @Override
     @Transactional
     public void addRole(String email, String roleName) throws NoUserFoundException, NoRoleFoundException {
@@ -65,11 +50,6 @@ public class UserServiceImpl implements UserService {
         user.getRoles().add(role);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see notulus.services.UserService#getByUsername(java.lang.String)
-     */
     @Override
     public User getByUsername(String email) throws NoUserFoundException {
         log.info("Getting user:{}", email);
@@ -77,12 +57,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NoUserFoundException("No user found with email:" + email));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.springframework.security.core.userdetails.UserDetailsService#
-     * loadUserByUsername(java.lang.String)
-     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> userRes = userRepository.findByEmail(email);
@@ -97,7 +71,8 @@ public class UserServiceImpl implements UserService {
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        user.getRoles()
+                .forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 authorities);

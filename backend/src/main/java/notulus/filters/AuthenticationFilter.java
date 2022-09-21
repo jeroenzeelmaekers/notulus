@@ -1,9 +1,9 @@
 package notulus.filters;
 
-import notulus.exception.InvalidLoginBodyException;
-import notulus.utils.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import notulus.exception.InvalidLoginBodyException;
+import notulus.utils.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,11 +19,6 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -43,7 +38,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-            Authentication authResult) throws IOException {
+                                            Authentication authResult) throws IOException {
         User user = (User) authResult.getPrincipal();
 
         String accessToken = jwtTokenProvider.generateAccessToken(request, user);
@@ -73,6 +68,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private record successfulAuthenticationBody(String username, List<String> roles, String accessToken,
-            String refreshToken) {
+                                                String refreshToken) {
     }
 }

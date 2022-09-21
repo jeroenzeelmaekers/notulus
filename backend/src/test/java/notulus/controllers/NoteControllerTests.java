@@ -1,18 +1,19 @@
 package notulus.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.thedeanda.lorem.LoremIpsum;
+import lombok.SneakyThrows;
 import notulus.controllers.v1.NoteController;
 import notulus.dtos.note.CreateNoteDto;
 import notulus.entities.Note;
 import notulus.services.NoteService;
 import notulus.utils.JsonUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.thedeanda.lorem.LoremIpsum;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,11 +29,6 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @ActiveProfiles(value = "test")
 @WebMvcTest(NoteController.class)
 public class NoteControllerTests {
@@ -58,7 +54,7 @@ public class NoteControllerTests {
         when(noteService.create(any(CreateNoteDto.class))).thenReturn(note);
 
         try {
-            mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/note")
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/note/create")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JsonUtil.toJson(createNoteDto)))
                     .andExpect(MockMvcResultMatchers.status().isOk())
@@ -83,19 +79,18 @@ public class NoteControllerTests {
             notes.add(Note.builder().content(lorum.getWords(random.nextInt(5, 20))).build());
         }
 
-        when(noteService.getAll(any(int.class), any(int.class), any(String.class))).thenReturn(notes);
+        when(noteService.getAll(any(Pageable.class))).thenReturn(null);
 
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/note"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.content().json(JsonUtil.toJson(notes)));
+                    .andExpect(MockMvcResultMatchers.status().isOk());
         } catch (JsonProcessingException e) {
             fail("Failed to convert to json");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        verify(noteService, times(1)).getAll(any(int.class), any(int.class), any(String.class));
+        verify(noteService, times(1)).getAll(any(Pageable.class));
     }
 
 }

@@ -1,9 +1,9 @@
 package notulus.controllers.v1;
 
-import notulus.services.UserService;
-import notulus.utils.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import notulus.services.UserService;
+import notulus.utils.JwtTokenProvider;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +20,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -46,14 +41,13 @@ public class AuthController {
                 String accessToken = jwtTokenProvider.generateAccessToken(request, user);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put(ACCESSTOKEN, accessToken);
-                tokens.put(REFRESHTOKEN, refreshToken);
+                tokens.put(ACCESS_TOKEN, accessToken);
+                tokens.put(REFRESH_TOKEN, refreshToken);
 
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
             } catch (Exception exception) {
-                response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
 
                 Map<String, String> error = new HashMap<>();

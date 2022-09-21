@@ -1,13 +1,13 @@
 package notulus.utils;
 
+import com.thedeanda.lorem.LoremIpsum;
+import lombok.SneakyThrows;
 import notulus.entities.Note;
 import notulus.entities.Role;
 import notulus.entities.User;
 import notulus.repositories.NoteRepository;
 import notulus.services.RoleService;
 import notulus.services.UserService;
-import com.thedeanda.lorem.LoremIpsum;
-import lombok.SneakyThrows;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -16,11 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @Component
 public record Seeder(NoteRepository noteRepository, RoleService roleService, UserService userService) {
 

@@ -15,7 +15,7 @@ export default function NoteComponent({
   const [content, setContent] = useState(note.content)
   const config = {
     headers: {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'application/json',
       Authorization: 'Bearer ' + user.accessToken,
     },
   }
@@ -25,14 +25,19 @@ export default function NoteComponent({
   }
 
   async function updateNote() {
+    const body = {
+      id: note.id,
+      content: content
+    }
+
     axios
-      .post('http://localhost:8080/api/v1/note/' + note.id, content, config)
+      .post('http://localhost:8080/api/v1/note/update' , body, config)
       .catch((error) => console.log(error))
   }
 
   async function deleteNote() {
     await axios
-      .delete('http://localhost:8080/api/v1/note/' + note.id, config)
+      .delete('http://localhost:8080/api/v1/note/delete' + note.id, config)
       .catch((error) => console.log(error))
   }
 

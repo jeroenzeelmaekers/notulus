@@ -1,23 +1,20 @@
 package notulus.controllers.v1;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import notulus.dtos.note.CreateNoteDto;
+import notulus.dtos.note.PagedNotesDto;
+import notulus.dtos.note.UpdateNoteDto;
 import notulus.entities.Note;
 import notulus.exception.NoNoteFoundException;
 import notulus.services.NoteService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/note")
@@ -28,21 +25,26 @@ public class NoteController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    @Operation(summary = "Get all saved notes")
-    protected ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy) {
-        List<Note> notes = noteService.getAll(pageSize, pageNo, sortBy);
-        return ResponseEntity.ok(notes);
+    protected ResponseEntity<?> getAll(@PageableDefault(page = 1, size = 10, sort = "id") Pageable pageable) {
+        Page<Note> pages = noteService.getAll(pageable);
+
+        PagedNotesDto dto = new PagedNotesDto(
+                pages.getNumber(),
+                pages.getTotalPages(),
+                pages.getNumberOfElements(),
+                pages.getSize(),
+                pages.getContent());
+
+        return ResponseEntity.ok(dto);
     }
 
-    @PostMapping("/{noteId}")
+    @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    protected ResponseEntity<?> update(@PathVariable(value = "noteId") final Long id,
-            @RequestBody final String content) {
+    protected ResponseEntity<?> update(@RequestBody UpdateNoteDto updateNoteDto) {
         Note note;
 
         try {
-            note = noteService.updateNote(id, content);
+            note = noteService.update(updateNoteDto);
         } catch (NoNoteFoundException e) {
             return ResponseEntity.ok(e.getMessage());
         } catch (Exception e) {
@@ -52,9 +54,9 @@ public class NoteController {
         return ResponseEntity.ok(note);
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    protected ResponseEntity<?> create(@RequestBody final CreateNoteDto createNoteDto) {
+    protected ResponseEntity<?> create(@RequestBody CreateNoteDto createNoteDto) {
         Note note;
 
         try {
@@ -68,10 +70,10 @@ public class NoteController {
 
     @DeleteMapping("/{noteId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    protected ResponseEntity<?> update(@PathVariable(value = "noteId") final Long id) {
+    protected ResponseEntity<?> delete(@PathVariable("noteId") Long id) {
 
         try {
-            noteService.deleteNote(id);
+            noteService.delete(id);
         } catch (NoNoteFoundException e) {
             return ResponseEntity.ok(e.getMessage());
         } catch (Exception e) {

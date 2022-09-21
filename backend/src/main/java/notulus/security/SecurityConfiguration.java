@@ -1,10 +1,10 @@
 package notulus.security;
 
+import lombok.RequiredArgsConstructor;
 import notulus.filters.AuthenticationFilter;
 import notulus.filters.AuthorizationFilter;
 import notulus.services.UserService;
 import notulus.utils.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-/**
- * @author Jeroen Zeelmaekers
- * @version 0.0.1
- * @since 23/08/2022
- */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -40,7 +35,8 @@ public class SecurityConfiguration {
     private final PasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager,
+                                           JwtTokenProvider jwtTokenProvider) throws Exception {
 
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, jwtTokenProvider);
         authenticationFilter.setFilterProcessesUrl("/api/v1/auth/login");
@@ -65,6 +61,5 @@ public class SecurityConfiguration {
 
         return daoAuthenticationProvider;
     }
-
 
 }
