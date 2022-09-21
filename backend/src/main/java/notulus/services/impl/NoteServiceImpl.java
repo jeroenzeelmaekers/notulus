@@ -52,7 +52,7 @@ public class NoteServiceImpl implements NoteService {
     public Note update(UpdateNoteDto updateNoteDto) throws NoNoteFoundException {
         log.info("Updating note:{} with content:{}", updateNoteDto.id(), updateNoteDto.content());
 
-        Note note = noteRepository.findById(updateNoteDto.id()).orElseThrow(NoNoteFoundException::new);
+        Note note = noteRepository.findById(updateNoteDto.id()).orElseThrow(() -> new NoNoteFoundException("No note found with id:" + updateNoteDto.id()));
         note.setContent(updateNoteDto.content());
 
         return noteRepository.save(note);
@@ -61,7 +61,8 @@ public class NoteServiceImpl implements NoteService {
     @Override
     @Transactional
     @CacheEvict(allEntries = true)
-    public void delete(Long id) {
+    public void delete(Long id) throws NoNoteFoundException {
+        noteRepository.findById(id).orElseThrow(() -> new NoNoteFoundException("No note found with id:" + id));
         log.info("Deleting note with id:{}", id);
 
         noteRepository.deleteById(id);

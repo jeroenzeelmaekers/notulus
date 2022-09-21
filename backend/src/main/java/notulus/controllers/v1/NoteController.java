@@ -25,7 +25,7 @@ public class NoteController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    protected ResponseEntity<?> getAll(@PageableDefault(page = 1, size = 10, sort = "id") Pageable pageable) {
+    protected ResponseEntity<?> getAll(@PageableDefault(sort = "id") Pageable pageable) {
         Page<Note> pages = noteService.getAll(pageable);
 
         PagedNotesDto dto = new PagedNotesDto(
@@ -47,8 +47,6 @@ public class NoteController {
             note = noteService.update(updateNoteDto);
         } catch (NoNoteFoundException e) {
             return ResponseEntity.ok(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok(note);
@@ -57,13 +55,7 @@ public class NoteController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     protected ResponseEntity<?> create(@RequestBody CreateNoteDto createNoteDto) {
-        Note note;
-
-        try {
-            note = noteService.create(createNoteDto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Note note = noteService.create(createNoteDto);
 
         return ResponseEntity.ok(note);
     }
@@ -76,8 +68,6 @@ public class NoteController {
             noteService.delete(id);
         } catch (NoNoteFoundException e) {
             return ResponseEntity.ok(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok().build();
