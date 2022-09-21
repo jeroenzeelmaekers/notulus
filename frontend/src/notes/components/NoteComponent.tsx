@@ -13,11 +13,10 @@ export default function NoteComponent({
 }) {
   const [edit, setEdit] = useState(false)
   const [content, setContent] = useState(note.content)
-  const [accessToken] = useState(localStorage.getItem('access_token'))
   const config = {
     headers: {
       'Content-Type': 'text/plain',
-      Authorization: 'Bearer ' + accessToken,
+      Authorization: 'Bearer ' + user.accessToken,
     },
   }
 

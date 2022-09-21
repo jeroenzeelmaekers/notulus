@@ -24,13 +24,7 @@ export default function Login({ setAuthenticated }: { setAuthenticated: any }) {
     axios
       .post('http://localhost:8080/api/v1/auth/login', data)
       .then((response) => {
-        localStorage.setItem('access_token', response.data.access_token)
-        localStorage.setItem('refresh_token', response.data.refresh_token)
-        localStorage.setItem(
-          'user',
-          JSON.stringify(jwtDecode(response.data.access_token))
-        )
-
+        localStorage.setItem('user', JSON.stringify(response.data))
         setAuthenticated(true)
         navigate('/', { replace: true })
       })

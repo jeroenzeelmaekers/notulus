@@ -7,7 +7,6 @@ import { Note } from './entities/Note'
 
 export function Home() {
   const navigate = useNavigate()
-  const [accessToken] = useState(localStorage.getItem('access_token'))
   const [user] = useState(parseUser(localStorage.getItem('user')))
   const [notes, setNotes] = useState([])
 
@@ -21,7 +20,7 @@ export function Home() {
   useEffect(() => {
     const config = {
       headers: {
-        Authorization: 'Bearer ' + accessToken,
+        Authorization: 'Bearer ' + user.accessToken,
       },
     }
 

@@ -8,14 +8,9 @@ import NotFound from './notfound/Index'
 
 export default function App() {
   function isSignedIn(): boolean {
-    const accessToken = localStorage.getItem('access_token')
-    const refreshToken = localStorage.getItem('refresh_token')
+    const user = localStorage.getItem('user')
 
-    if (accessToken != null && refreshToken != null) {
-      return true
-    } else {
-      return false
-    }
+    return user == null ? false : true
   }
 
   const [authenticated, setAuthenticated] = useState(isSignedIn)

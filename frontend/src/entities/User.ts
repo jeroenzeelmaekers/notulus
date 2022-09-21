@@ -1,7 +1,6 @@
 export type User = {
-  sub: string
+  username: string
   roles: string[]
-  iss: string
-  exp: number
-  iat: number
+  accessToken: string
+  refreshToken: string
 }

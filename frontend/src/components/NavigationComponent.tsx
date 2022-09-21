@@ -9,8 +9,7 @@ export default function Navigation({
 }) {
   const navigate = useNavigate()
   const clearToken = () => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
+    localStorage.removeItem('user')
     setAuthenticated(false)
     navigate('/login', { replace: true })
   }
