@@ -19,6 +19,8 @@ An overengineerd notes app using Spring Boot and React.
 | spring-boot-starter-data-jpa | 2.7.3 |
 | spring-boot-starter-security | 2.7.3 |
 | spring-boot-starter-test | 2.7.3 |
+| spring-boot-starter-cache | 2.7.3 |
+| spring-boot-starter-data-redis | 2.7.3 |
 | postgresql | 42.5.0 |
 | h2 | 2.1.214 |
 | java-jwt | 4.0.0 |
