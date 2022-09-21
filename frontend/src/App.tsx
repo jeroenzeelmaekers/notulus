@@ -8,14 +8,13 @@ import NotFound from './notfound/Index'
 import { User } from './entities/User'
 
 export default function App() {
-
   const [user] = useState<User | null>(parseUser)
 
   function parseUser(): User | null {
-    const lsUser = localStorage.getItem('user')
+    const lsUser = sessionStorage.getItem('user')
 
     if (lsUser == null) {
-      return null;
+      return null
     }
 
     return JSON.parse(lsUser)

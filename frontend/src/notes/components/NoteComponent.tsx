@@ -20,18 +20,14 @@ export default function NoteComponent({
     },
   }
 
-  const handleContentChange = (event: any) => {
-    setContent(event.target.value)
-  }
-
   async function updateNote() {
     const body = {
       id: note.id,
-      content: content
+      content: content,
     }
 
-    axios
-      .post('http://localhost:8080/api/v1/note/update' , body, config)
+    await axios
+      .post('http://localhost:8080/api/v1/note/update', body, config)
       .catch((error) => console.log(error))
   }
 
@@ -47,7 +43,7 @@ export default function NoteComponent({
         <textarea
           className="p-5 w-full"
           value={content}
-          onChange={handleContentChange}
+          onChange={(e) => setContent(e.target.value)}
         />
       ) : (
         <div className="p-5 w-full break-words">{content}</div>

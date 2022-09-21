@@ -1,5 +1,4 @@
 import axios from 'axios'
-import jwtDecode from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,7 +23,7 @@ export default function Login({ setAuthenticated }: { setAuthenticated: any }) {
     axios
       .post('http://localhost:8080/api/v1/auth/login', data)
       .then((response) => {
-        localStorage.setItem('user', JSON.stringify(response.data))
+        sessionStorage.setItem('user', JSON.stringify(response.data))
         setAuthenticated(true)
         navigate('/', { replace: true })
       })

@@ -71,7 +71,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String username, List<SimpleGrantedAuthority> authorities,
-            HttpServletRequest request) {
+                                            HttpServletRequest request) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthToken = new UsernamePasswordAuthenticationToken(
                 username, null, authorities);
         usernamePasswordAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
