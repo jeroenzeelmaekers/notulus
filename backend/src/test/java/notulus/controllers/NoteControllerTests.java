@@ -5,6 +5,7 @@ import com.thedeanda.lorem.LoremIpsum;
 import lombok.SneakyThrows;
 import notulus.controllers.v1.NoteController;
 import notulus.dtos.note.CreateNoteDto;
+import notulus.dtos.note.PagedNotesDto;
 import notulus.entities.Note;
 import notulus.services.NoteService;
 import notulus.utils.JsonUtil;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -55,8 +58,8 @@ public class NoteControllerTests {
 
         try {
             mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/note/create")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(JsonUtil.toJson(createNoteDto)))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.toJson(createNoteDto)))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.content().json(JsonUtil.toJson(note)));
         } catch (JsonProcessingException e) {
@@ -79,11 +82,15 @@ public class NoteControllerTests {
             notes.add(Note.builder().content(lorum.getWords(random.nextInt(5, 20))).build());
         }
 
-        when(noteService.getAll(any(Pageable.class))).thenReturn(null);
+        Page<Note> notePage = new PageImpl<>(notes);
+        PagedNotesDto dto = new PagedNotesDto(0, 1, 5, 5, notes);
+
+        when(noteService.getAll(any(Pageable.class))).thenReturn(notePage);
 
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/note"))
-                    .andExpect(MockMvcResultMatchers.status().isOk());
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().json(JsonUtil.toJson(dto)));
         } catch (JsonProcessingException e) {
             fail("Failed to convert to json");
         } catch (Exception e) {
