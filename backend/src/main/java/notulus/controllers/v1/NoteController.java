@@ -29,8 +29,9 @@ public class NoteController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get all saved notes")
-    protected ResponseEntity<?> getAll() {
-        List<Note> notes = noteService.getAll();
+    protected ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy) {
+        List<Note> notes = noteService.getAll(pageSize, pageNo, sortBy);
         return ResponseEntity.ok(notes);
     }
 

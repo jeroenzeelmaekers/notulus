@@ -21,10 +21,15 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see notulus.services.RoleService#save(notulus.entities.Role)
+     */
     @Override
     @Transactional
     public Role save(Role role) {
-        log.trace("Saving role: {}", role);
+        log.info("Saving role: {}", role);
         return roleRepository.save(role);
     }
 }

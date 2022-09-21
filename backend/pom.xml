@@ -18,6 +18,8 @@
 		<starter.data.jpa.version>2.7.3</starter.data.jpa.version>
 		<starter.test.version>2.7.3</starter.test.version>
 		<starter.security.version>2.7.3</starter.security.version>
+		<starter.cache.version>2.7.3</starter.cache.version>
+		<starter.redis.version>2.7.3</starter.redis.version>
 		<lombok.version>1.18.24</lombok.version>
 		<postgresql.version>42.5.0</postgresql.version>
 		<h2.version>2.1.214</h2.version>
@@ -40,6 +42,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 			<version>${starter.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+			<version>${starter.cache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<version>${starter.redis.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>

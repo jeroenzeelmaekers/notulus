@@ -8,5 +8,9 @@ import notulus.entities.Role;
  * @since 23/08/2022
  */
 public interface RoleService {
+    /**
+     * @param role the to save role
+     * @return the newly saved role
+     */
     Role save(Role role);
 }

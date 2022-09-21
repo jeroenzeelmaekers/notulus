@@ -23,12 +23,20 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       SPRING_DATASOURCE_USERNAME: notulus
       SPRING_DATASOURCE_PASSWORD: notulus
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
     ports:
       - 8080:8080
     volumes:
       - backend:/home/user/api
     depends_on:
       - postgres
+
+  redis:
+    container_name: notulus-db-cache
+    image: redis:latest
+    ports:
+    - 6379:6379
 
   postgres:
     container_name: notulus-db

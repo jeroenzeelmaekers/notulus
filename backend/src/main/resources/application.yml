@@ -5,6 +5,13 @@ jwt:
 spring:
   application:
     name: notulus-backend
+  output:
+    ansi:
+      enabled: always
+  data:
+    redis:
+      repositories:
+        enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5432/notulus-db
     username: notulus
@@ -14,6 +21,14 @@ spring:
       ddl-auto: create-drop
     properties:
       dialect: org.hibernate.dialect.PostgresSQLDialect
+  cache:
+    cache-names:
+      - notes
+    redis:
+      time-to-live: 600000
+  redis:
+    host: localhost
+    port: 6379
 springdoc:
   swagger-ui:
     operations-sorter: alpha

@@ -56,11 +56,11 @@ public record Seeder(NoteRepository noteRepository, RoleService roleService, Use
 
     @SneakyThrows
     private void seedUsers() {
-        userService.save(new User(null, "Jeroen Zeelmaekers", "jeroen", "password1234", new ArrayList<>()));
-        userService.save(new User(null, "Jeroen Zeelmaekers 2", "jeroen 2", "password1234", new ArrayList<>()));
+        userService.save(new User(null, "admin@notulus.be", "password1234", new ArrayList<>()));
+        userService.save(new User(null, "user@notulus.be", "password1234", new ArrayList<>()));
 
-        userService.addRole("jeroen", "ROLE_USER");
-        userService.addRole("jeroen 2", "ROLE_ADMIN");
+        userService.addRole("user@notulus.be", "ROLE_USER");
+        userService.addRole("admin@notulus.be", "ROLE_ADMIN");
     }
 
 }

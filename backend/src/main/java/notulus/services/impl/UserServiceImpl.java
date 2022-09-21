@@ -34,46 +34,72 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see notulus.services.UserService#save(notulus.entities.User)
+     */
     @Override
     @Transactional
     public User save(User user) {
-        log.trace("Saving user:{}", user);
+        log.info("Saving user:{}", user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see notulus.services.UserService#addRole(java.lang.String, java.lang.String)
+     */
     @Override
     @Transactional
-    public void addRole(String username, String roleName) throws NoUserFoundException, NoRoleFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoUserFoundException("No user found with username:" + username));
-        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new NoRoleFoundException("No role found with name:" + roleName));
+    public void addRole(String email, String roleName) throws NoUserFoundException, NoRoleFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoUserFoundException("No user found with email:" + email));
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new NoRoleFoundException("No role found with name:" + roleName));
 
-        log.trace("Adding role:{} to user:{}", roleName, username);
+        log.info("Adding role:{} to user:{}", roleName, email);
+
         user.getRoles().add(role);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see notulus.services.UserService#getByUsername(java.lang.String)
+     */
     @Override
-    public User getByUsername(String username) throws NoUserFoundException {
-        log.trace("Getting user:{}", username);
-        return userRepository.findByUsername(username).orElseThrow(() -> new NoUserFoundException("No user found with username:" + username));
+    public User getByUsername(String email) throws NoUserFoundException {
+        log.info("Getting user:{}", email);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoUserFoundException("No user found with email:" + email));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.springframework.security.core.userdetails.UserDetailsService#
+     * loadUserByUsername(java.lang.String)
+     */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userRes = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> userRes = userRepository.findByEmail(email);
         User user;
 
         if (userRes.isEmpty()) {
-            log.error("No user found with username:{}", username);
-            throw new UsernameNotFoundException("User not found with username:" + username);
+            log.error("No user found with email:{}", email);
+            throw new UsernameNotFoundException("User not found with email:" + email);
         } else {
             user = userRes.get();
-            log.trace("User found with username:{}", username);
+            log.info("User found with email:{}", email);
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+                authorities);
     }
 }

@@ -83,7 +83,7 @@ public class NoteControllerTests {
             notes.add(Note.builder().content(lorum.getWords(random.nextInt(5, 20))).build());
         }
 
-        when(noteService.getAll()).thenReturn(notes);
+        when(noteService.getAll(any(int.class), any(int.class), any(String.class))).thenReturn(notes);
 
         try {
             mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/note"))
@@ -95,7 +95,7 @@ public class NoteControllerTests {
             e.printStackTrace();
         }
 
-        verify(noteService, times(1)).getAll();
+        verify(noteService, times(1)).getAll(any(int.class), any(int.class), any(String.class));
     }
 
 }

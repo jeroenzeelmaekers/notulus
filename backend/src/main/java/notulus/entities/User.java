@@ -27,8 +27,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private String name;
-    private String username;
+    private String email;
     private String password;
     @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();

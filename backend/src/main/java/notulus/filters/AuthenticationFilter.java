@@ -15,11 +15,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import static notulus.security.JWTConstants.ACCESSTOKEN;
-import static notulus.security.JWTConstants.REFRESHTOKEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -52,12 +49,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtTokenProvider.generateAccessToken(request, user);
         String refreshToken = jwtTokenProvider.generateRefreshToken(request, user);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put(ACCESSTOKEN, accessToken);
-        tokens.put(REFRESHTOKEN, refreshToken);
+        List<String> roles = jwtTokenProvider.getRoles(user.getAuthorities());
+
+        successfulAuthenticationBody body = new successfulAuthenticationBody(user.getUsername(), roles, accessToken,
+                refreshToken);
 
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), body);
     }
 
     private requestBody getUsernamePassword(HttpServletRequest request) throws InvalidLoginBodyException {
@@ -72,5 +70,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private record requestBody(String username, String password) {
+    }
+
+    private record successfulAuthenticationBody(String username, List<String> roles, String accessToken,
+            String refreshToken) {
     }
 }
