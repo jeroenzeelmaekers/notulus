@@ -1,12 +1,12 @@
 package notulus.controllers.v1;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import notulus.dtos.note.CreateNoteDto;
 import notulus.entities.Note;
 import notulus.exception.NoNoteFoundException;
 import notulus.services.NoteService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ public class NoteController {
     @PostMapping("/{noteId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     protected ResponseEntity<?> update(@PathVariable(value = "noteId") final Long id,
-                                        @RequestBody final String content) {
+                                       @RequestBody final String content) {
         Note note;
 
         try {
