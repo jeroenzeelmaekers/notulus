@@ -1,0 +1,21 @@
+server:
+  port: 8080
+jwt:
+  secret: "secret"
+spring:
+  application:
+    name: notulus-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notulus-db
+    username: notulus
+    password: notulus
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      dialect: org.hibernate.dialect.PostgresSQLDialect
+springdoc:
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+  show-login-endpoint: true
