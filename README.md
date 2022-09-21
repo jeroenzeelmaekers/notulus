@@ -3,7 +3,7 @@ Notulus
 </h3>
 
 <p align="center">
-An overengineerd notes app using Spring Boot and React.
+An notes app using Spring Boot and React.
 </p>
 
 <hr/>
