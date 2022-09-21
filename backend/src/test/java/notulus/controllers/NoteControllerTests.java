@@ -3,7 +3,6 @@ package notulus.controllers;
 import notulus.controllers.v1.NoteController;
 import notulus.dtos.note.CreateNoteDto;
 import notulus.entities.Note;
-import notulus.exception.NoNoteFoundException;
 import notulus.services.NoteService;
 import notulus.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -60,8 +59,8 @@ public class NoteControllerTests {
 
         try {
             mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/note")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonUtil.toJson(createNoteDto)))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(JsonUtil.toJson(createNoteDto)))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.content().json(JsonUtil.toJson(note)));
         } catch (JsonProcessingException e) {

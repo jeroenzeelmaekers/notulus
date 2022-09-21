@@ -34,7 +34,8 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> add(@RequestBody User user) {
         user = userService.save(user);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/add").toUriString());
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/add").toUriString());
 
         return ResponseEntity.created(uri).body(user);
     }

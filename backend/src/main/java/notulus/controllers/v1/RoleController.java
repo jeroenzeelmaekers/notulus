@@ -31,7 +31,8 @@ public class RoleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Role> add(@RequestBody Role role) {
         role = roleService.save(role);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/role/add").toUriString());
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/role/add").toUriString());
 
         return ResponseEntity.created(uri).body(role);
     }

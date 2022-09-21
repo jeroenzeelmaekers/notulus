@@ -37,7 +37,7 @@ public class NoteController {
     @PostMapping("/{noteId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     protected ResponseEntity<?> update(@PathVariable(value = "noteId") final Long id,
-                                       @RequestBody final String content) {
+            @RequestBody final String content) {
         Note note;
 
         try {
@@ -79,6 +79,5 @@ public class NoteController {
 
         return ResponseEntity.ok().build();
     }
-
 
 }

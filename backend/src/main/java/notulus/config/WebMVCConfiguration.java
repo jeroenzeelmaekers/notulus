@@ -19,4 +19,3 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
     }
 
 }
-

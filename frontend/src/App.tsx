@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Navigation from './components/NavigationComponent'
 import ProtectedRoutes from './security/ProtectedRoutes'

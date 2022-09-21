@@ -36,8 +36,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/v1/auth/login") || request.getServletPath().equals("/api/v1/auth/refresh")) {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
+        if (request.getServletPath().equals("/api/v1/auth/login")
+                || request.getServletPath().equals("/api/v1/auth/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -48,7 +50,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     String username = jwtTokenProvider.getSubject(token);
                     List<SimpleGrantedAuthority> authorities = jwtTokenProvider.getAuthorities(token);
 
-                    Authentication authenticationToken = jwtTokenProvider.getAuthentication(username, authorities, request);
+                    Authentication authenticationToken = jwtTokenProvider.getAuthentication(username, authorities,
+                            request);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                     filterChain.doFilter(request, response);
